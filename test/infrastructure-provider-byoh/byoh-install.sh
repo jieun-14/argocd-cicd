@@ -64,7 +64,7 @@ if [[ "$ACTION" == "install" ]]; then
     envsubst < "manifests/$FILE" | kubectl apply -f -
   done
 elif [[ "$ACTION" == "delete" ]]; then
-  for FILE in $(echo "${FILES[@]}" | tac); do
+  for FILE in $(printf "%s\n" "${FILES[@]}" | tac); do
     echo "Deleting $FILE..."
     envsubst < "manifests/$FILE" | kubectl delete -f -
   done
