@@ -24,6 +24,9 @@ NAMESPACE="cicd-test"
 APISERVER=$(kubectl config view -ojsonpath='{.clusters[0].cluster.server}')
 CA_CERT=$(kubectl config view --flatten -ojsonpath='{.clusters[0].cluster.certificate-authority-data}')
 
+# workload cluster 자원을 구분할 management cluster namespace 생성
+kubectl create namespace $NAMESPACE
+
 # BootstrapKubeconfig 상태 확인
 EXISTING_AGE=$(kubectl get bootstrapkubeconfig $NAME -n $NAMESPACE -o=jsonpath='{.metadata.creationTimestamp}' 2>/dev/null | \
                xargs -I{} date -d {} +%s 2>/dev/null)
