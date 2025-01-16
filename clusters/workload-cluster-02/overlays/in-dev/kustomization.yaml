@@ -5,7 +5,7 @@ configMapGenerator:
   - name: byoh-agent-config
     literals:
       - NAMESPACE=cicd-test
-      - ENVIRONMENT=dev
+      - ENVIRONMENT=in-dev
       - KUBE_VER=v1.30.8
     commands:
       - ROLE_NAME: echo "$HOSTNAME" | awk -F'-' '{print gensub(/[0-9]+$/, "", "g", $3)}'
