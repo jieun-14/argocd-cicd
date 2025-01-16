@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: byoh-agent-config
+  namespace: cicd-test
+data:
+  NAMESPACE: "cicd-test"
+  ENVIRONMENT: "in-dev"
+  KUBE_VER: "v1.30.8"
+  ROLE_NAME: |
+    $(echo "$HOSTNAME" | awk -F'-' '{print gensub(/[0-9]+$/, "", "g", $3)}')

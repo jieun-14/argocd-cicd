@@ -1,0 +1,10 @@
+sortOptions:
+  order: lexical
+resources:
+  - 1_cluster.yaml
+  - 2_byocluster.yaml
+  - 3_kubeadmcontrolplane.yaml
+  - 4_byomachinetemplate.yaml
+  - 5_kubeadmconfigtemplate.yaml
+  - 6_machinedeployment.yaml
+  - 7_byomachinetemplate_worker.yaml

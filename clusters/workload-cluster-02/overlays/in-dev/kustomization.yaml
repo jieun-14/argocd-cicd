@@ -1,0 +1,42 @@
+resources:
+  - ../../base
+
+configMapGenerator:
+  - name: byoh-agent-config
+    literals:
+      - NAMESPACE=cicd-test
+      - ENVIRONMENT=dev
+      - KUBE_VER=v1.30.8
+    commands:
+      - ROLE_NAME: echo "$HOSTNAME" | awk -F'-' '{print gensub(/[0-9]+$/, "", "g", $3)}'
+
+vars:
+  - name: NAMESPACE
+    objref:
+      kind: ConfigMap
+      name: byoh-agent-config
+      apiVersion: v1
+    fieldref:
+      fieldPath: data.NAMESPACE
+  - name: ENVIRONMENT
+    objref:
+      kind: ConfigMap
+      name: byoh-agent-config
+      apiVersion: v1
+    fieldref:
+      fieldPath: data.ENVIRONMENT
+  - name: KUBE_VER
+    objref:
+      kind: ConfigMap
+      name: byoh-agent-config
+      apiVersion: v1
+    fieldref:
+      fieldPath: data.KUBE_VER
+  - name: ROLE_NAME
+    objref:
+      kind: ConfigMap
+      name: byoh-agent-config
+      apiVersion: v1
+    fieldref:
+      fieldPath: data.ROLE_NAME
+
