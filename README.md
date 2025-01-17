@@ -1,42 +1,42 @@
 # dev-mgmt-cluster
 dev 환경 mgmt k8s cluster 배포를 위한 argocd 연동용 repo 입니다
 
-.
-├── README.md
-├── clusters
-│   ├── workload-cluster
-│   │   └── base
-│   │       ├── deployment.yaml
-│   │       ├── kustomization.yaml
-│   │       └── namespace.yaml
-│   └── workload-cluster-02
-│       ├── base
-│       │   ├── 1_cluster.yaml
-│       │   ├── 2_byocluster.yaml
-│       │   ├── 3_kubeadmcontrolplane.yaml
-│       │   ├── 4_byomachinetemplate.yaml
-│       │   ├── 5_kubeadmconfigtemplate.yaml
-│       │   ├── 6_machinedeployment.yaml
-│       │   ├── 7_byomachinetemplate_worker.yaml
-│       │   └── kustomization.yaml
-│       └── overlays
-│           └── in-dev
-│               ├── env-configmap.yaml
-│               └── kustomization.yaml
-└── test
-    └── infrastructure-provider-byoh
-        ├── byoh-agent-install.sh
-        ├── byoh-install.sh
-        ├── manifests
-        │   ├── 1_cluster.yaml
-        │   ├── 2_byocluster.yaml
-        │   ├── 3_kubeadmcontrolplane.yaml
-        │   ├── 4_byomachinetemplate.yaml
-        │   ├── 5_kubeadmconfigtemplate.yaml
-        │   ├── 6_machinedeployment.yaml
-        │   └── 7_byomachinetemplate_worker.yaml
-        └── ssh-provision.sh
-        
+.  
+├── README.md    
+├── clusters  
+│   ├── workload-cluster  
+│   │   └── base  
+│   │       ├── deployment.yaml  
+│   │       ├── kustomization.yaml  
+│   │       └── namespace.yaml  
+│   └── workload-cluster-02  
+│       ├── base  
+│       │   ├── 1_cluster.yaml  
+│       │   ├── 2_byocluster.yaml  
+│       │   ├── 3_kubeadmcontrolplane.yaml  
+│       │   ├── 4_byomachinetemplate.yaml  
+│       │   ├── 5_kubeadmconfigtemplate.yaml  
+│       │   ├── 6_machinedeployment.yaml  
+│       │   ├── 7_byomachinetemplate_worker.yaml  
+│       │   └── kustomization.yaml  
+│       └── overlays  
+│           └── in-dev  
+│               ├── env-configmap.yaml  
+│               └── kustomization.yaml  
+└── test  
+    └── infrastructure-provider-byoh  
+        ├── byoh-agent-install.sh  
+        ├── byoh-install.sh  
+        ├── manifests  
+        │   ├── 1_cluster.yaml  
+        │   ├── 2_byocluster.yaml  
+        │   ├── 3_kubeadmcontrolplane.yaml  
+        │   ├── 4_byomachinetemplate.yaml  
+        │   ├── 5_kubeadmconfigtemplate.yaml  
+        │   ├── 6_machinedeployment.yaml  
+        │   └── 7_byomachinetemplate_worker.yaml  
+        └── ssh-provision.sh  
+          
 
 [byoh-install.sh]
 이 스크립트는 BYOH(Bring Your Own Host) 환경의 호스트에 BYOH 구성 요소를 설치하는 데 사용됩니다. 
