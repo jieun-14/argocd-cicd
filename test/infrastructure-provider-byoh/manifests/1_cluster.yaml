@@ -2,7 +2,7 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
   labels:
-    #cni: ${CNI}
+    cni: ${CNI_LABEL}
     crs: "true"
     clusterName: ${CLUSTER_NAME}
   name: ${CLUSTER_NAME}
