@@ -3,30 +3,28 @@
 export CRI_VERSION='1.7.25-1'
 export K8S_VERSION='1.30.8-1.1'
 export APT_KEY_PATH='/usr/share/keyrings'
-export APT_KEY_K8S='v1.30'
+export APT_KEY_K8S="v${K8S_VERSION%.*.*}"
 
 ## BYOH
-export APISERVER=$(kubectl config view -ojsonpath='{.clusters[0].cluster.server}')
-export CA_CERT=$(kubectl config view --flatten -ojsonpath='{.clusters[0].cluster.certificate-authority-data}')
-export CLIENT_CERT=$(kubectl config view --flatten -ojsonpath='{.users[0].user.client-certificate-data}')
-export CLIENT_KEY=$(kubectl config view --flatten -ojsonpath='{.users[0].user.client-key-data}')
-export CLUSTER_NAME=cicd-cluster
-export NAMESPACE=cicd-test
+export CLUSTER_NAME="byoh-cluster"
+export NAMESPACE="next-test"
 export CONTROL_PLANE_ENDPOINT_IP="172.25.30.185"
 export CONTROL_PLANE_ENDPOINT_PORT="6443"
 export CONTROL_PLANE_MACHINE_COUNT="3"
-export KUBERNETES_VERSION="v1.30.8"
+export KUBERNETES_VERSION="v${K8S_VERSION%-*}"
 #export CONTROL_PLANE_ROLE="k8scont"
-export CONTROL_PLANE_ROLE="cicdcont"
+export CONTROL_PLANE_ROLE="master"
 export OPENSTACK_NODE_ROLE="oscontrl"
 export NETWORK_NODE_ROLE="osnetwk"
 #export COMPUTE_NODE_ROLE="oscompt"
-export COMPUTE_NODE_ROLE="cicdwork"
+export COMPUTE_NODE_ROLE="worker"
 export ENVIRONMENT="dev"
 export WORKER_MACHINE_COUNT="2"
 
 ## CNI
-export CNI=kube-ovn
+export CNI_NAME="kube-ovn"
+export CNI_LABEL="kube-ovn"
+export OVN_DB_IPS="172.25.30.146,172.25.30.108,172.25.30.132"
 
 
 ## 실행
@@ -56,16 +54,18 @@ FILES=(
   "5_kubeadmconfigtemplate.yaml"
   "6_machinedeployment.yaml"
   "7_byomachinetemplate_worker.yaml"
+  "cni_kubeovn-configmap.yaml"
+  "cni_clusterresourceset.yaml"
 )
 
 if [[ "$ACTION" == "install" ]]; then
   for FILE in "${FILES[@]}"; do
     echo "Applying $FILE..."
-    envsubst < "manifests/$FILE" | kubectl apply -f -
+    envsubst < "byoh/$FILE" | kubectl apply -f -
   done
 elif [[ "$ACTION" == "delete" ]]; then
   for FILE in $(printf "%s\n" "${FILES[@]}" | tac); do
     echo "Deleting $FILE..."
-    envsubst < "manifests/$FILE" | kubectl delete -f -
+    envsubst < "byoh/$FILE" | kubectl delete -f -
   done
 fi
