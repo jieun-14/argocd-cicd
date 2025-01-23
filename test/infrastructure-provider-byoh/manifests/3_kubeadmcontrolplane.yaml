@@ -32,7 +32,6 @@ spec:
       - curl -fsSL https://pkgs.k8s.io/core:/stable:/${APT_KEY_K8S}/deb/Release.key -o /usr/share/keyrings/kubernetes-apt-keyring.asc
       - echo "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/${APT_KEY_K8S}/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
       - apt -y update
-#      - apt install -y kubelet=1.30.7-1.1 kubeadm=1.30.7-1.1 kubectl=1.30.7-1.1 containerd.io=${CRI_VERSION}
       - apt install -y kubelet=${K8S_VERSION} kubeadm=${K8S_VERSION} kubectl=${K8S_VERSION} containerd.io=${CRI_VERSION}
       - containerd config default > /etc/containerd/config.toml
       - sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
@@ -61,6 +60,7 @@ spec:
       controllerManager:
         extraArgs:
           bind-address: "0.0.0.0"
+          cluster-signing-duration: "876000h"
       dns: {}
       etcd:
         local:
@@ -79,7 +79,9 @@ spec:
         - FileAvailable--etc-kubernetes-kubelet.conf
         kubeletExtraArgs:
           healthz-bind-address: "0.0.0.0"
+          node-labels: "kube-ovn/role=master"
     joinConfiguration:
+      caCertPath: /etc/kubernetes/pki/ca.crt
       nodeRegistration:
         criSocket: /var/run/containerd/containerd.sock
         ignorePreflightErrors:
@@ -88,14 +90,12 @@ spec:
         - FileAvailable--etc-kubernetes-kubelet.conf
         kubeletExtraArgs:
           healthz-bind-address: "0.0.0.0"
+          node-labels: "kube-ovn/role=master"
   machineTemplate:
     infrastructureRef:
       apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
       kind: ByoMachineTemplate
       name: ${CLUSTER_NAME}-control-plane
       namespace: ${NAMESPACE}
-    metadata:
-      labels:
-        kube-ovn/role: master
   replicas: ${CONTROL_PLANE_MACHINE_COUNT}
   version: ${KUBERNETES_VERSION}
