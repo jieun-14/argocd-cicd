@@ -3,10 +3,9 @@
 ## Pre-configuration
 sudo -i
 apt-get install socat ebtables ethtool conntrack
-ROLE_NAME=$(echo "$HOSTNAME" | awk -F'-' '{print gensub(/[0-9]+$/, "", "g", $3)}')
-#ROLE_NAME=$(echo "$HOSTNAME" | awk -F'-' '{print $2}' | sed 's/[0-9]*//g')
-KUBE_VER="v1.30.8"
-NAMESPACE="cicd-test"
+#ROLE_NAME=$(echo "$HOSTNAME" | awk -F'-' '{print gensub(/[0-9]+$/, "", "g", $3)}')
+ROLE_NAME=$(echo "$HOSTNAME" | awk -F'-' '{print $2}' | sed 's/[0-9]*//g')
+NAMESPACE="next-test"
 ENVIRONMENT="dev"
 
 ## Add a hostname to localhost IP
@@ -31,7 +30,7 @@ Environment="NS_ARGS=--namespace $NAMESPACE"
 Environment="CERT_ARGS=--certExpiryDuration 189216000"
 Environment="CERTIFICATE_ROTATION=true"
 Environment="METRIC_ARGS=--metricsbindaddress :10001"
-Environment="LABEL_ARGS=--label environment=$ENVIRONMENT --label role=$ROLE_NAME --label hostname=$HOSTNAME --label kubernetes=$KUBE_VER"
+Environment="LABEL_ARGS=--label environment=$ENVIRONMENT --label role=$ROLE_NAME --label hostname=$HOSTNAME"
 Environment="MGMT_ARGS=--bootstrap-kubeconfig /etc/byoh-agent/mgmt/kubeconfig"
 Environment="INSTALL_ARGS=--skip-installation true"
 ExecStart=/usr/local/bin/byoh-agent \$NS_ARGS \$CERT_ARGS \$LABEL_ARGS \$MGMT_ARGS \$INSTALL_ARGS \$METRIC_ARGS
