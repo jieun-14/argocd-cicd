@@ -5,7 +5,7 @@ metadata:
   namespace: ${NAMESPACE}
 spec:
   clusterName: ${CLUSTER_NAME}
-  replicas: 2
+  replicas: ${WORKER_MACHINE_COUNT}
   selector:
     matchLabels: null
   template:
