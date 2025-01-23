@@ -31,7 +31,6 @@ spec:
       - curl -fsSL https://pkgs.k8s.io/core:/stable:/${APT_KEY_K8S}/deb/Release.key -o /usr/share/keyrings/kubernetes-apt-keyring.asc
       - echo "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/${APT_KEY_K8S}/deb/ /" > /etc/apt/sources.list.d/kubernetes.list
       - apt -y update
-#      - apt install -y kubelet=1.30.7-1.1 kubeadm=1.30.7-1.1 kubectl=1.30.7-1.1 containerd.io=1.7.22-1
       - apt install -y kubelet=${K8S_VERSION} kubeadm=${K8S_VERSION} kubectl=${K8S_VERSION} containerd.io=${CRI_VERSION}
       - containerd config default > /etc/containerd/config.toml
       - sed -i "s/SystemdCgroup = false/SystemdCgroup = true/g" /etc/containerd/config.toml
@@ -39,6 +38,7 @@ spec:
       - systemctl enable containerd.service
       - systemctl restart containerd.service
       joinConfiguration:
+        caCertPath: /etc/kubernetes/pki/ca.crt
         nodeRegistration:
           criSocket: /var/run/containerd/containerd.sock
           ignorePreflightErrors:
@@ -47,3 +47,4 @@ spec:
           - FileAvailable--etc-kubernetes-kubelet.conf
           kubeletExtraArgs:
             healthz-bind-address: "0.0.0.0"
+            node-labels: "openstack-control-plane=enabled"
