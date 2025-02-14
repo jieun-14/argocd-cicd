@@ -1,4 +1,4 @@
-# admin-cluster
+# admin-dev-cluster
 Cluster 들에 대해 배포 및 관리를 위한 Admin Cluster
 
 .  
