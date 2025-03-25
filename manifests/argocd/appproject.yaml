@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: devops
+  namespace: cicd-tools
+spec:
+  description: "svc-dev cluster, ns-devops 전용"
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: ns-devops
+      server: "https://kube-api-server.svcdev.next:6443"  # svc-dev 클러스터
+      name: "svc-dev"  # 클러스터 별칭
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: front
+  namespace: cicd-tools
+spec:
+  description: "svc-dev cluster, ns-front 전용"
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: ns-front
+      server: "https://kube-api-server.svcdev.next:6443"  # svc-dev 클러스터
+      name: "svc-dev"  # 클러스터 별칭
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: foundation-stack
+  namespace: cicd-tools
+spec:
+  description: "pl-dev cluster"
+  sourceRepos:
+    - '*'
+  destinations:
+    - namespace: '*'
+      server: "https://kube-api-server.pldev.next:6443"  # pl-dev 클러스터
+      name: "pl-dev"  # 클러스터 별칭

@@ -1,0 +1,34 @@
+apiVersion: v1
+data:
+  dex.config: |
+    connectors:
+      - type: github
+        id: github-next
+        name: Github-next
+        config:
+          clientID: Ov23liApBUfbv0vS1yoR
+          clientSecret: eb267072072f55e07aac07152a039973fda91249
+          orgs:
+            - name: kt-cloud-next
+      - type: github
+        id: github-stack
+        name: Github-stack
+        config:
+          clientID: Ov23liBaDZrnxPnSm7iL
+          clientSecret: 0dc2f8134046410852bc63e74578d08760278ea0
+          orgs:
+            - name: kt-cloud-stack
+  url: https://argocd-md-dev.ktcloud.com
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app.kubernetes.io/name":"argocd-cm","app.kubernetes.io/part-of":"argocd"},"name":"argocd-cm","namespace":"cicd-tools"}}
+  creationTimestamp: "2025-01-09T04:16:54Z"
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+  name: argocd-cm
+  namespace: cicd-tools
+  resourceVersion: "25545477"
+  uid: cf918272-a5b6-4c3a-bf70-718f8cf4791c

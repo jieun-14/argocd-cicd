@@ -1,0 +1,355 @@
+expose:
+  type: clusterIP
+  tls:
+    enabled: false 
+    certSource: none
+    auto:
+      commonName: ""
+    secret:
+      secretName: ""
+  ingress:
+    hosts:
+      core: harbor-md-dev.ktcloud.com
+    controller: default
+    kubeVersionOverride: ""
+    className: ""
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    labels: {}
+  clusterIP:
+    name: harbor
+    staticClusterIP: ""
+    ports:
+      httpPort: 80
+      httpsPort: 443
+    annotations: {}
+    labels: {}
+  nodePort:
+    name: harbor
+    ports:
+      http:
+        port: 80
+        nodePort: 30002
+      https:
+        port: 443
+        nodePort: 30003
+    annotations: {}
+    labels: {}
+  loadBalancer:
+    name: harbor
+    IP: ""
+    ports:
+      httpPort: 80
+      httpsPort: 443
+    annotations: {}
+    labels: {}
+    sourceRanges: []
+
+externalURL: https://harbor-md-dev.ktcloud.com
+
+persistence:
+  enabled: true
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    registry:
+      existingClaim: ""
+      storageClass: "netapp-nas-storage-admin-nfsv3"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 2Ti
+      annotations: {}
+    jobservice:
+      jobLog:
+        existingClaim: ""
+        storageClass: "netapp-nas-storage-admin-nfsv3"
+        subPath: ""
+        accessMode: ReadWriteOnce
+        size: 50Gi
+        annotations: {}
+    database:
+      existingClaim: ""
+      storageClass: "netapp-nas-storage-admin-nfsv3"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 20Gi
+      annotations: {}
+    redis:
+      existingClaim: ""
+      storageClass: "netapp-nas-storage-admin-nfsv3"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 20Gi
+      annotations: {}
+    trivy:
+      existingClaim: ""
+      storageClass: "netapp-nas-storage-admin-nfsv3"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 50Gi
+      annotations: {}
+  imageChartStorage:
+    disableredirect: false
+    type: filesystem
+    filesystem:
+      rootdirectory: /storage
+    azure:
+      accountname: accountname
+      accountkey: base64encodedaccountkey
+      container: containername
+      existingSecret: ""
+    gcs:
+      bucket: bucketname
+      encodedkey: base64-encoded-json-key-file
+      existingSecret: ""
+      useWorkloadIdentity: false
+    s3:
+      region: us-west-1
+      bucket: bucketname
+    swift:
+      authurl: https://storage.myprovider.com/v3/auth
+      username: username
+      password: password
+      container: containername
+      existingSecret: ""
+    oss:
+      accesskeyid: accesskeyid
+      accesskeysecret: accesskeysecret
+      region: regionname
+      bucket: bucketname
+      existingSecret: ""
+
+# existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+harborAdminPassword: Harbor12345
+
+containerSecurityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+
+portal:
+  image:
+    repository: goharbor/harbor-portal
+    tag: v2.11.0
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  replicas: 1
+  revisionHistoryLimit: 10
+  extraEnvVars: []
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  podAnnotations: {}
+  podLabels: {}
+  serviceAnnotations: {}
+  priorityClassName:
+  initContainers: []
+
+core:
+  image:
+    repository: goharbor/harbor-core
+    tag: v2.11.0
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  replicas: 1
+  revisionHistoryLimit: 10
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 10
+  extraEnvVars: []
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  podAnnotations: {}
+  podLabels: {}
+  serviceAnnotations: {}
+  priorityClassName:
+  initContainers: []
+  configureUserSettings:
+  quotaUpdateProvider: db # Or redis
+  secret: ""
+  existingSecret: ""
+  secretName: ""
+  tokenKey: |
+  tokenCert: |
+  xsrfKey: ""
+  existingXsrfSecret: ""
+  existingXsrfSecretKey: CSRF_KEY
+  artifactPullAsyncFlushDuration:
+  gdpr:
+    deleteUser: false
+    auditLogsCompliant: false
+
+jobservice:
+  image:
+    repository: goharbor/harbor-jobservice
+    tag: v2.11.0
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  replicas: 1
+  revisionHistoryLimit: 10
+  extraEnvVars: []
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints:
+  podAnnotations: {}
+  podLabels: {}
+  priorityClassName:
+  initContainers: []
+  maxJobWorkers: 10
+  jobLoggers:
+    - file
+  loggerSweeperDuration: 14 #days
+  notification:
+    webhook_job_max_retry: 3
+    webhook_job_http_client_timeout: 3 # in seconds
+  reaper:
+    max_update_hours: 24
+    max_dangling_hours: 168
+  secret: ""
+  existingSecret: ""
+  existingSecretKey: JOBSERVICE_SECRET
+
+registry:
+  registry:
+    image:
+      repository: goharbor/registry-photon
+      tag: v2.11.0
+    extraEnvVars: []
+  controller:
+    image:
+      repository: goharbor/harbor-registryctl
+      tag: v2.11.0
+    extraEnvVars: []
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  replicas: 1 
+  revisionHistoryLimit: 10
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  podAnnotations: {}
+  podLabels: {}
+  priorityClassName:
+  initContainers: []
+  secret: ""
+  existingSecret: ""
+  existingSecretKey: REGISTRY_HTTP_SECRET
+  relativeurls: true
+  credentials:
+    username: "harbor_registry_user"
+    password: "harbor_registry_password"
+    existingSecret: ""
+    htpasswdString: ""
+  middleware:
+    enabled: false
+    type: cloudFront
+    cloudFront:
+      baseurl: example.cloudfront.net
+      keypairid: KEYPAIRID
+      duration: 3000s
+      ipfilteredby: none
+      privateKeySecret: "my-secret"
+  upload_purging:
+    enabled: true
+    age: 168h
+    interval: 24h
+    dryrun: false
+
+trivy:
+  enabled: true
+  image:
+    repository: goharbor/trivy-adapter-photon
+    tag: v2.11.0
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  replicas: 2
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  extraEnvVars: []
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  podAnnotations: {}
+  podLabels: {}
+  priorityClassName:
+  initContainers: []
+  debugMode: false
+  vulnType: "os,library"
+  severity: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+  ignoreUnfixed: false
+  insecure: false
+  gitHubToken: ""
+  skipUpdate: false
+  skipJavaDBUpdate: false
+  offlineScan: false
+  securityCheck: "vuln"
+  timeout: 5m0s
+
+database:
+  type: internal
+  internal:
+    image:
+      repository: goharbor/harbor-db
+      tag: v2.11.0
+    serviceAccountName: ""
+    automountServiceAccountToken: false
+    livenessProbe:
+      timeoutSeconds: 1
+    readinessProbe:
+      timeoutSeconds: 1
+    extraEnvVars: []
+    tolerations: []
+    affinity: {}
+    priorityClassName:
+    extrInitContainers: []
+    password: "changeit"
+    shmSizeLimit: 512Mi
+    initContainer:
+      migrator: {}
+      permissions: {}
+  maxIdleConns: 100
+  maxOpenConns: 900
+  podAnnotations: {}
+  podLabels: {}
+
+redis:
+  type: internal
+  internal:
+    image:
+      repository: goharbor/redis-photon
+    serviceAccountName: ""
+    automountServiceAccountToken: false
+    extraEnvVars: []
+    tolerations: []
+    affinity: {}
+    priorityClassName:
+    initContainers: []
+    jobserviceDatabaseIndex: "1"
+    registryDatabaseIndex: "2"
+    trivyAdapterIndex: "5"
+  external:
+    addr: "192.168.0.2:6379"
+    sentinelMasterSet: ""
+    coreDatabaseIndex: "0"
+    jobserviceDatabaseIndex: "1"
+    registryDatabaseIndex: "2"
+    trivyAdapterIndex: "5"
+    username: ""
+    password: ""
+    existingSecret: ""
+  podAnnotations: {}
+  podLabels: {}
