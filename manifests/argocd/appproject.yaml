@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: devops
+  name: backend
   namespace: cicd-tools
 spec:
   description: "svc-dev cluster, ns-devops 전용"
