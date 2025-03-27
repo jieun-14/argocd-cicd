@@ -1,0 +1,35 @@
+apiVersion: v1
+data:
+  Corefile: |
+    .:53 {
+        hosts {
+           172.16.1.21 kube-api-server.pldev.next
+           172.16.1.41 kube-api-server.svcdev.next
+           fallthrough
+        }
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+           max_concurrent 1000
+        }
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2025-01-07T09:03:33Z"
+  name: coredns
+  namespace: kube-system
+  resourceVersion: "24016424"
+  uid: 333b82b3-552f-49dc-91d6-9393d1f7a141
