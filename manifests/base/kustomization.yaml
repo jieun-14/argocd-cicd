@@ -1,0 +1,12 @@
+resources:
+  - appproject.yaml
+  - clusterrole.yaml
+  - configmap.yaml
+  - customresourcedefinition.yaml
+  - deployment.yaml
+  - networkpolicy.yaml
+  - role.yaml
+  - secret.yaml
+  - service.yaml
+  - serviceaccount.yaml
+  - statefulset.yaml
