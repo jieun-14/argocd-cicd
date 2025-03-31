@@ -1,0 +1,13 @@
+# base 리소스 불러오기
+resources:
+  - ../../base
+
+# namespace 설정 (리소스에 metadata.namespace가 없을때만 적용됨)
+# namespace: cicd-tools
+
+# patch가 필요하면 여기에 추가 가능 
+# patches:
+#   - target:
+#       kind: AppProject
+#       name: backend
+#     path: patch-backend.yaml
