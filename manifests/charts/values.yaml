@@ -1,0 +1,9 @@
+argocd:
+  namespace: argocd
+  image:
+    repository: quay.io/argoproj/argocd
+    tag: v2.10.0
+  server:
+    serviceAccountName: argocd-server
+  rbac:
+    clusterRole: argocd-cluster-role
