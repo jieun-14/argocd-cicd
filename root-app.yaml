@@ -4,11 +4,11 @@ metadata:
   name: root-app
   namespace: argocd
 spec:
-  project: default  # 
+  project: default
   source:
     repoURL: https://github.com/jieun-14/argocd-cicd.git
     targetRevision: main
-    path: manifests/overlays/md  # 이 경로가 overlay 디렉토리
+    path: manifests/apps   # 경로를 apps로 변경함
     directory:
       recurse: true
   destination:
