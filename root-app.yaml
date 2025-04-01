@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/jieun-14/argocd-cicd.git
     targetRevision: main
-    path: manifests/apps   # 경로를 apps로 변경함
+    path: manifests/apps
     directory:
       recurse: true
   destination:
