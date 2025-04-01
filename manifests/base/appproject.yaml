@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: argocd
+spec:
+  description: all
+  sourceRepos:
+    - '*'  # 모든 Git 리포 허용
+  destinations:
+    - namespace: '*'  # 모든 네임스페이스 허용
+      server: https://kubernetes.default.svc  # 현재 클러스터
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
