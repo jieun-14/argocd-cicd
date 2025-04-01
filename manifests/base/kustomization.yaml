@@ -10,3 +10,4 @@ resources:
   - service.yaml
   - serviceaccount.yaml
   - statefulset.yaml
+  - nginx-test-deploy.yaml
