@@ -3,4 +3,4 @@ resources:
   - ../../base
 
 # namespace 설정 (리소스에 metadata.namespace가 없을때만 적용됨)
-namespace: cicd-tools
+namespace: argocd
