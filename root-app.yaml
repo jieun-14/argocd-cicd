@@ -2,18 +2,18 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: root-app
-  namespace: cicd-tools
+  namespace: argocd
 spec:
   project: default  # 
   source:
-    repoURL: https://github.com/너의-org/너의-repo.git
+    repoURL: https://github.com/jieun-14/argocd-cicd.git
     targetRevision: main
     path: manifests/overlays/md  # 이 경로가 overlay 디렉토리
     directory:
       recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: cicd-tools
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
